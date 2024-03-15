@@ -1,0 +1,112 @@
+--Chạy postgress
+docker run -it \
+    -e POSTGRES_USER="root" \
+    -e POSTGRES_PASSWORD="root" \
+    -e POSTGRES_DB="ny_taxi" \
+    -v d://study//DE-Zoomcamp//docker_sql//ny_taxi_postgres_data:/var/lib/postgresql/data \
+    -p 5432:5432 \
+    postgres:13
+
+
+--Chạy pgAdmin
+docker run -it \
+    -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+    -e PGADMIN_DEFAULT_PASSWORD="root" \
+    -p 8080:80 \
+    dpage/pgadmin4
+
+
+--Tạo network
+
+docker network create pg-network
+-------------------------------------Introduce docker-----------------------------------------------
+Bước 1: Tạo postgres
+docker run -it \
+    -e POSTGRES_USER="root" \
+    -e POSTGRES_PASSWORD="root" \
+    -e POSTGRES_DB="ny_taxi" \
+    -v d://study//DE-Zoomcamp//docker_sql//ny_taxi_postgres_data:/var/lib/postgresql/data \
+    -p 5432:5432 \
+    --network=pg-network \
+    --name pg-database \
+    postgres:13
+
+Tip:+ để tương tác với postgres trong git bash ta có thể dùng pgcli của python (pip install pgcli)
+    + pgcli -h localhost -p 5432 -u root -d ny_taxi 
+
+Bước 2: Cài đặt jupyter notebook để cho csv vào cơ sở dữ liệu
+
+Bước 3: Muốn xem database trực quan (không phải xem trên terminal) thì sử dụng pgadmin
+
+docker run -it \
+    -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+    -e PGADMIN_DEFAULT_PASSWORD="root" \
+    -p 8080:80 \
+    --network=pg-network \
+    --name pgadmin \
+    dpage/pgadmin4
+
+Bước 4 ingettion scrip(viết đoạn mã python để add dữ liệu vào db dùng docker)
+python ingest_data.py \
+    --user=root \
+    --password=root \
+    --host=localhost \
+    --port=5432 \
+    --db=ny_taxi \
+    --table_name=yellow_taxi_trips 
+
+docker build -t taxi_ingest:v001 .
+
+docker run -it \
+    --network=pg-network \
+    taxi_ingest:v001 \
+        --user=root \
+        --password=root \
+        --host=pg-database \
+        --port=5432 \
+        --db=ny_taxi \
+        --table_name=yellow_taxi_trips 
+
+Tip: Có thể sử dụng docker-compose để chạy nhanh hơn 
+
+
+-----------------------------Terraform---------------------------------------
+Các bước làm việc với Terraform với GCP
+Bước 1: Tạo service account 
+    IAM & Admin -> service accounts -> create service account
+Bước 2: Tạo key
+    Ấn vào dấu 3 chấm dọc của account và vào manage key -> add key -> Create new key -> json
+    Sau khi tạo được key xong thì lưu vào 1 folder
+        + mkdir Terraform
+        + cd Terraform
+        + mkdir keys
+        + cd keys
+        + nano my-creds.json
+        + copy json vừa tải xuống vào
+        + Ctrl+o: To save the file and continue editing it.
+        + Ctrl+x: To save the changes and exit editing.
+Bước 3: Tạo file main.tf (cùng hàng với folder keys)
+        + Lên google tìm kiếm "Terraform google provider" và cop code vào
+        + Xác thực key đã tạo bằng cách dùng dòng lệnh : export GOOGLE_CREDENTIALS='path file json' (lưu vào biến GOOGLE_CREDENTIALS)
+        + Kiểm tra biến bằng cách echo $GOOGLE_CREDENTIALS
+        + Sử dụng lệnh terraform init
+        + Lên google tra terraform google cloud storage bucket
+        + Copy và sửa code
+        + chạy lệnh terraform plan
+        + chạy lệnh terraform apply
+        + muốn hủy chạy lệnh terraform destroy
+
+
+Terraform : tạo big querry dataset
+        + lên google tra terraform bigquery dataset
+
+Terraform variables
+        +Tạo file variables.tf
+
+
+
+        + Các lệnh Terraform :
+            -terraform fmt: format lại tệp tf
+            -terraform init
+            -terraform plan
+            -terraform aply
