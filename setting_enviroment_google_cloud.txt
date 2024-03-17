@@ -1,0 +1,68 @@
+Bước 1: trên googlecloud chọn Compute Engine -> VM instances 
+Bước 2: tạo key ssh
+      + Đọc doc: https://cloud.google.com/compute/docs/connect/create-ssh-keys
+      + Vào git-bash 
+          +cd .ssh/
+          +gõ lệnh: ssh-keygen -t rsa -f gcp -C minhnghia -b 2048 rồi ấn enter nếu ko cài password
+          +gõ lệnh cat gcp.pub
+          +copy nội dung file
+Bước 3: Trong compute Engine vào Metadata -> ssh keys -> create key 
+      + Copy nội dung file ở bước 2 vào và save
+Bước 4: Vào VM instances => create instances và tạo 1 máy chủ
+Bước 5: Cop ip của External IP
+Bước 6: ssh into VM 
+      + Vào git bash(ở root)
+      + gõ lệnh: ssh -i ~/.ssh/gcp minhnghia@34.80.141.97
+Bước 7: Configure VM and setup local(linux)
+      + download anaconda: 
+            wget https://repo.anaconda.com/archive/Anaconda3-2024.02-1-Linux-x86_64.sh
+            chạy anaconda dùng lệnh : bash anaconda(tab) và enter để tải packet
+      + mở gitbash khác(root)
+            gõ lệnh cd .ssh/ để vào terminal
+            tạo file config: touch config 
+            code config để vào vs code 
+                  Host {Tên VM}
+                  HostName {Địa chỉ External IP}
+                  User {Tên user}
+                  IdentityFile {path chứa file gcp}
+            Ví dụ:  Host de-zoomcamp
+                    HostName 34.80.141.97
+                    User minhnghia
+                    IdentityFile c:/Users/ADMIN/.ssh/gcp
+      + cd về root
+      + gõ lệnh ssh de-zoomcamp để vào máy chủ cloud
+      + Trong máy chủ(de-zoomcamp) 
+            gõ lệnh less .bashrc để xem anaconda đã được cài đặt chưa và nhấn q để thoát ra
+            nếu chưa cài đặt thì thêm anaconda vào đường dẫn (path enviromen): export PATH="/home/minhnghia/anaconda3/bin:$PATH" sau đó gõ lệnh conda init
+            gõ lệnh source .bashrc để về base
+            +down load docker: sudo apt-get update
+                               sudo apt-get install docker.io
+                               sudo groupadd docker
+                               sudo gpasswd -a $USER docker
+                               sudo service docker restart
+                               logout
+                               ssh de-zoomcamp
+            +down docker compose: link git: https://github.com/docker/compose/releases
+                              mkdir bin
+                              cd bin/
+                              wget https://github.com/docker/compose/releases/download/v2.25.0/docker-compose-linux-x86_64 -O docker-compose
+                              chmod +x docker-compose
+            +add thư mục bin trong đường dẫn toàn cục
+                              gõ lệnh nano .bashrc dể edit file
+                              thêm export PATH="${HOME}/bin:${PATH}" sau đó ctrl o -> enter -> ctrl x
+
+            +Clone project git của mình về
+
+Bước 8: ssh với vscode
+      +Tải extension: Remote - SSH
+      +Góc trái dưới màn hình chọn open a remote window => connect to host => de-zoomcamp
+      +open file và chọn folder trên remote
+      +Thêm port để nối với local
+Bước 9: tải terraform
+      + cd bin
+      + wget https://releases.hashicorp.com/terraform/1.7.5/terraform_1.7.5_linux_amd64.zip
+      + sudo apt-get install unzip
+      + unzip terraform_1.7.5_linux_amd64.zip
+
+
+
