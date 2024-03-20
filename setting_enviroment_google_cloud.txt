@@ -63,6 +63,19 @@ Bước 9: tải terraform
       + wget https://releases.hashicorp.com/terraform/1.7.5/terraform_1.7.5_linux_amd64.zip
       + sudo apt-get install unzip
       + unzip terraform_1.7.5_linux_amd64.zip
+Bước 10: sftp google credentials to VM
+      + add file amin json vào .gc
+      + từ trong thư mục .gc gõ lệnh:
+            + sftp to de-zoomcamp
+            + mkdir .gc
+            + cd .gc
+            + put + file json
+      + thoát ra ở lại thư mục terraform gõ lênh:
+            + export GOOGLE_APPLICATION_CREDENTIALS=~/.gc/(file json)
+      +Tiếp theo xác thực client của máy gõ lệnh
+            + gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
+      +Sau đó thực hiện init, plan, apply bình thường
+      
 
 
 
