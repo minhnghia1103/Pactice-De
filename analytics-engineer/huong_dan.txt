@@ -1,0 +1,9 @@
+----------------------------------How to setup dbt cloud with bigquery-------------------
+Bước 1:Create a BigQuery service account
+  + Mở APIs and SERVICE  sau đó ấn CREATE CREDENTIALS -> service account -> tạo key cho tài khoản đó
+Bước 2: Create a dbt cloud project
+Link: https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/dbt_cloud_setup.md
+
+
+--------------------------------------Development of dbt models-------------------
+Tạo môi trường DBT bằng clone git: https://github.com/dbt-labs/dbt-starter-project.git

@@ -1,0 +1,8 @@
+-------------------------OLAP AND OLTP ---------------------------
+- data warehoue
+  + OLAP solution 
+  + Used for reporting and data analysis
+Bigquery là 1 datawarehouse
+
+------------------------Partition, clustering  In BQ ----------------
+Phân vùng xong thì tiếp theo sẽ phân cụm
