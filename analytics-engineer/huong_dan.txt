@@ -6,4 +6,6 @@ Link: https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-an
 
 
 --------------------------------------Development of dbt models-------------------
-Tạo môi trường DBT bằng clone git: https://github.com/dbt-labs/dbt-starter-project.git
+Bước 1:Tạo môi trường DBT bằng clone git: https://github.com/dbt-labs/dbt-starter-project.git
+Bước 2:Vào phần setting-> project 
+  Trong Project details điền địa chỉ(path) project subdirectory  là project dbt trong project lớn của mình ở github
